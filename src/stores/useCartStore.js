@@ -4,18 +4,33 @@ import { defineStore } from "pinia";
 export const useCardStore = defineStore("card", () => {
   const items = reactive([
     { id: 1, cnt: 3 },
-    { id: 2, cnt: 5 },
+
     { id: 3, cnt: 1 },
   ]);
   function addCard(item) {
-    items.push(item);
+    const existingItem = items.find((it) => it.id === item.id);
+    if (existingItem) {
+      existingItem.cnt += 1;
+    } else {
+      items.push(item);
+    }
   }
   function removeCard(id) {
-    items.filter((it) => it.id != id);
+    const index = items.findIndex((it) => it.id === id);
+    if (index !== -1) {
+      if (items[index].cnt > 1) {
+        items[index].cnt -= 1;
+      } else {
+        items.splice(index, 1);
+      }
+    }
   }
-  function getCardById(id) {
+  function inCart(id) {
     return items.some((it) => it.id === id);
   }
+  function getCardById(id) {
+    return items.find((it) => it.id == id);
+  }
   const getLenght = computed(() => items.length);
-  return { addCard, removeCard, getCardById, getLenght };
+  return { addCard, removeCard, inCart, getLenght, getCardById };
 });

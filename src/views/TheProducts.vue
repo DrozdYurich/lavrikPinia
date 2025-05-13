@@ -1,8 +1,12 @@
 <template>
+  <RouterView />
   <div>
-    {{ all }}
-    Products
-    <CardProd v-for="it in all" :title="it.title" />
+    <CardProd
+      v-for="it in all"
+      :title="it.title"
+      :price="it.price"
+      :rout="it.id"
+    />
   </div>
 </template>
 <script setup>
