@@ -1,18 +1,19 @@
 import { ref, computed, reactive } from "vue";
-import { defineStore } from "pinia";
-
+import { defineStore, storeToRefs } from "pinia";
+import { useProductsStore } from "./useProductsStore";
 export const useCardStore = defineStore("card", () => {
+  const { getItems } = storeToRefs(useProductsStore());
   const items = reactive([
     { id: 1, cnt: 3 },
-
     { id: 3, cnt: 1 },
   ]);
+
   function addCard(item) {
-    const existingItem = items.find((it) => it.id === item.id);
+    const existingItem = items.find((it) => it.id === item);
     if (existingItem) {
       existingItem.cnt += 1;
     } else {
-      items.push(item);
+      items.push({ id: item, cnt: 1 });
     }
   }
   function removeCard(id) {
@@ -32,5 +33,15 @@ export const useCardStore = defineStore("card", () => {
     return items.find((it) => it.id == id);
   }
   const getLenght = computed(() => items.length);
-  return { addCard, removeCard, inCart, getLenght, getCardById };
+  const getSumCart = computed(() => {
+    const data = getItems.value;
+    return items.reduce((sum, itemCurd) => {
+      const prod = data.find((it) => it.id === itemCurd.id);
+      if (prod) {
+        return sum + itemCurd.cnt * prod.price;
+      }
+      return sum;
+    }, 0);
+  });
+  return { addCard, removeCard, inCart, getLenght, getCardById, getSumCart };
 });

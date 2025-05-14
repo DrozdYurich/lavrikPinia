@@ -6,17 +6,25 @@
       <RouterLink :to="{ name: 'product', params: { id: rout } }"
         >ReadMore</RouterLink
       >
+      Добавлено:{{ displCount }}
+      <DivBtn :id="rout" />
     </template>
   </Card>
 </template>
 
 <script setup>
 import { Card } from "primevue";
+import DivBtn from "./DivBtn.vue";
+import { useCardStore } from "@/stores/useCartStore";
+import { computed } from "vue";
 const props = defineProps({
   title: String,
   price: Number,
   rout: Number,
 });
+const cartStore = useCardStore();
+const currentCard = computed(() => cartStore.getCardById(props.rout));
+const displCount = computed(() => currentCard.value?.cnt || 0);
 </script>
 <style scoped>
 .crd {
