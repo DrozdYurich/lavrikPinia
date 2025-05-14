@@ -7,7 +7,8 @@ export const useProductsStore = defineStore("products", () => {
     { id: 2, price: 140, title: "Sams3" },
     { id: 3, price: 150, title: "Sams6" },
   ]);
-
+  function getCartById() {}
   const getItems = computed(() => items);
+
   return { getItems };
 });
