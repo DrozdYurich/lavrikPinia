@@ -29,6 +29,15 @@ export const useCardStore = defineStore("card", () => {
   function inCart(id) {
     return items.some((it) => it.id === id);
   }
+  function getCartWithDetail() {
+    return items.map((it) => {
+      const products = getItems.value.filter((itP) => itP.id == it.id);
+      return {
+        ...it,
+        product: products || null,
+      };
+    });
+  }
   function getCardById(id) {
     return items.find((it) => it.id == id);
   }
@@ -43,5 +52,13 @@ export const useCardStore = defineStore("card", () => {
       return sum;
     }, 0);
   });
-  return { addCard, removeCard, inCart, getLenght, getCardById, getSumCart };
+  return {
+    addCard,
+    removeCard,
+    inCart,
+    getLenght,
+    getCardById,
+    getCartWithDetail,
+    getSumCart,
+  };
 });
