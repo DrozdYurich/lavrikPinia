@@ -34,7 +34,8 @@ export const useCardStore = defineStore("card", () => {
       const products = getItems.value.filter((itP) => itP.id == it.id);
       return {
         ...it,
-        product: products || null,
+        title: products[0].title || null,
+        price: products[0].price,
       };
     });
   }
